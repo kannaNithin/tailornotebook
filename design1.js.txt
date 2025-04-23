@@ -1,0 +1,44 @@
+// models/Design.js
+const mongoose = require('mongoose');
+
+const designSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    description: {
+        type: String,
+        trim: true
+    },
+    materialType: {
+        type: String,
+        enum: ['Cotton', 'Silk', 'Satin', 'Leather', 'Denim', 'Linen', 'Other'],
+        default: 'Cotton'
+    },
+    status: {
+        type: String,
+        enum: ['Draft', 'In Progress', 'Completed'],
+        default: 'Draft'
+    },
+    neonElements: {
+        type: Boolean,
+        default: false
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+// Update the updatedAt field before saving
+designSchema.pre('save', function(next) {
+    this.updatedAt = Date.now();
+    next();
+});
+
+module.exports = mongoose.model('Design', designSchema);
